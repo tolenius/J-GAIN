@@ -1,0 +1,36 @@
+ Dep Vars Count (depCount)
+           1
+ Var Names
+ nucl
+ Var Units
+ molecule/m^3
+ Indep Vars Count (dimCount)
+           3
+ Dims
+          33
+          17
+           9
+ Indep Vars Names
+ A
+ N
+ T
+ Indep Vars Units
+ molecule/m^3
+ molecule/m^3
+ K
+ minVals,maxVals
+      0.11000000E+02      0.15000000E+02
+      0.14000000E+02      0.17000000E+02
+      0.29815000E+03      0.33015000E+03
+ isLog10
+ T
+ T
+ F
+ isVapour
+ T
+ T
+ F
+ BinFile
+ ./lookup.bin
+ totalCount
+                 5049

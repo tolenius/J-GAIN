@@ -1,0 +1,29 @@
+&shared
+indepCount=5  ! The number of independent variables including vapours
+depCount=1  ! ! the number of dependent Variables. (Should not change) 
+debug = .true. 
+diagOut = .true. 
+/
+
+
+&dependent
+outVarNames='nucl'           ! the name of the output varabble 
+outUnits='molecule/m^3'     ! the unit of the output varabble 
+outputFileBase='lookup.10'      ! the base of the output file 
+outputDirectory='.'          ! the output directory if dot then the output is *$PROJECT_HOME/output* otherwise set absolute path. 
+outputFormat=0               !   0: bin,  1:Netcdf  ! Don't change. NetCDF is not supported yet.  
+
+/
+
+
+&independent
+varNames='A','N','CS','T','IPR'                          !Select from 'ACID','BASE','CS','T','IPR' . names of the independent variables 
+units='molecule/m^3','molecule/m^3','s^-1','K','ions/m^3/s'
+dimensions=33,17,1,9,1                              ! The number of points devising each independent variable domain interval. 
+isLog10=.TRUE.,.TRUE.,.TRUE.,.FALSE.,.FALSE.         ! when true Log10 scale is conedered for the corresponding varable.
+isVapour=.TRUE.,.TRUE.,.FALSE.,.FALSE.,.FALSE.
+minVals=11.D0,  14.D0 , -3.D0  , 298.15D0  , 3000000    ! domain interval min 
+maxVals=15.D0,  17.D0 , -3.D0  , 330.15D0  , 3000000    ! domain interval max 
+! to fix a variable at a constant value the max and min values of that variable should be the same and dimension equal to 1 
+
+/

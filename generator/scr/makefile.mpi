@@ -1,0 +1,92 @@
+SHELL := /bin/bash
+############### Used Should nod modify the code below ###########
+
+
+ifeq ($(SRC_AD),)
+  $(error SRC_AD is not set)
+endif
+
+ifeq ($(BIN_AD),)
+  $(error BIN_AD is not set)
+endif
+
+ifeq ($(OBJS_AD),)
+  $(error OBJS_AD is not set)
+endif
+
+ifeq ($(ACDC_LIB_AD),)
+  $(error ACDC_LIB_AD is not set)
+endif
+
+ifeq ($(ACDC_INC_AD),)
+  $(error ACDC_INC_AD is not set)
+endif
+
+
+
+F90 = mpif90
+ 
+OPTS  = -g -DMPI -ffree-line-length-none -cpp -J$(OBJS_AD) -I$(OBJS_AD) -I$(ACDC_INC_AD) -fcheck=all -ffpe-trap=invalid,zero,overflow -O3 
+
+  
+# When compiling, search for files in these directories:
+VPATH = $(OBJS_AD):$(SRC_AD)
+
+            			   
+LOOKUP_OBJ =   mo_kind.o mo_debug.o mo_config.o mo_mpi.o mo_runtime.o mo_utils.o mo_lookup_config.o mo_gen_profile.o  mo_gen_parallel.o mo_writer.o mo_gen.o
+
+
+
+
+# Make automatic variables reminder:
+#   $@   target
+#   $<   first prerequisite
+#   $^   all dependencies, duplicates removed
+
+all: build  
+build: jgain_mpi.exe
+
+	 
+# Here is the link step:
+
+jgain_mpi.exe: main.o  $(LOOKUP_OBJ)
+	 $(F90) $(OPTS) -I$(OBJS_AD) $(addprefix $(OBJS_AD)/,$^)   -o $(BIN_AD)/$@ -lacdc -L$(ACDC_LIB_AD) 
+
+# Here are the compile steps:
+# Main program
+main.o: main.f90 $(LOOKUP_OBJ)  
+	 $(F90) $(OPTS) -c $< -o $(OBJS_AD)/$@
+
+
+
+mo_kind.o: mo_kind.f90
+	 $(F90) $(OPTS) -c  $< -o $(OBJS_AD)/$@ 
+mo_debug.o: mo_debug.f90
+	 $(F90) $(OPTS) -c  $< -o $(OBJS_AD)/$@ 
+mo_config.o: mo_config.f90
+	 $(F90) $(OPTS) -c  $< -o $(OBJS_AD)/$@ 
+mo_mpi.o: mo_mpi.f90
+	 $(F90) $(OPTS) -c  $< -o $(OBJS_AD)/$@ 
+mo_runtime.o: mo_runtime.f90
+	 $(F90) $(OPTS) -c  $< -o $(OBJS_AD)/$@ 
+mo_utils.o: mo_utils.f90
+	 $(F90) $(OPTS) -c  $< -o $(OBJS_AD)/$@ 
+mo_lookup_config.o: mo_lookup_config.f90
+	 $(F90) $(OPTS) -c  $< -o $(OBJS_AD)/$@ 
+mo_gen_profile.o: mo_gen_profile.f90
+	 $(F90) $(OPTS) -c  $< -o $(OBJS_AD)/$@ 	 
+mo_gen_parallel.o: mo_gen_parallel.f90
+	 $(F90) $(OPTS) -c  $< -o $(OBJS_AD)/$@ 
+mo_writer.o: mo_writer.f90
+	 $(F90) $(OPTS) -c  $< -o $(OBJS_AD)/$@ 
+mo_gen.o: mo_gen.f90
+	 $(F90) $(OPTS) -c  $< -o $(OBJS_AD)/$@ 
+     
+
+
+ 
+clean:
+	-@cd $(OBJS_AD) ; rm -f *.o *.mod       2>/dev/null || true
+	-@cd $(WORKING_HOME) ; rm -f jgain_mpi.exe2>/dev/null || true
+     $
+ 
