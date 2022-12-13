@@ -1,3 +1,33 @@
+# Daniel
+first build ACDC by runing 
+```
+# set the parameters  like 
+# dip_file="dip_pol_298.15K_426clusters2016Apr25.txt"
+# hs_file="HS298.15K_426clusters2016Apr25.txt"
+# in build-acdc.sh the run
+bash build-acdc.sh
+```
+build the generator 
+```
+bash build-gen.sh serial  # select between serial and mpi 
+```
+To run it see the example in examples/gen_mpi or examples/gen_serial
+
+
+build the interpolator by running 
+```
+bash build-interpolator.sh
+```
+in the examples folder there are many examples:
+* gen_mpi: run the generator in parallel mode usning mpi 
+* gen_serial: run the generator in serial
+* interp_dual: interolation using tow tables as illustrated in the paper
+* interp_single: simple interoplation using one table and using the actual table without modification
+* interp_single_log: interoplation using one table and using the actual table without modification but in the log space for both table values and log parameters.
+* tables: two samples of pre-generated tables to be used in the examples.
+
+
+
 # NN &ndash; New-particle formation rate look-up table generator and interpolator
 
 NN is a tool for incorporating aerosol formation rate predictions from molecular modeling to large-scale atmospheric models using look-up tables. NN consists of two parts: a table generator and a table interpolator.
