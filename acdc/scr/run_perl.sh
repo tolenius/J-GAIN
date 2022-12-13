@@ -20,7 +20,7 @@ l_const_vapor=1
 
 
 temp_values=(280 285 290)  ## K   will not be used if variable_temperature=1
-rh_values=(20 30 40)     ## g/kg  will not be used if variable_temperature=1
+rh_values=(20 30 40)     ## %  will not be used if variable_temperature=1
 
 variable_temperature=1 # 1-is yes 0 -no 
 
@@ -108,7 +108,7 @@ subroutine acdc_driver_wrapper(neqn,nclust,nout_all,c,cs_ref,&
 	! Ambient conditions
 	real(kind(1.d0)), intent(in) :: cs_ref				! reference coagulation sink (1/s)
 	real(kind(1.d0)), intent(in) :: temperature			! temperature (K)
-	real(kind(1.d0)), intent(in) :: rh			        ! relative humidity (g/kg) ! negative for none rh and varable temperature
+	real(kind(1.d0)), intent(in) :: rh			        ! relative humidity (%) ! negative for none rh and varable temperature
 	real(kind(1.d0)), intent(in) :: ipr					! ion production rate (1/s/m^3)
 	! Simulation settings and outcome
 	real(kind(1.d0)), intent(in) :: t_max, t_tot		! simulation time and total accumulated time (s)

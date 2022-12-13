@@ -19,7 +19,7 @@ use driver_acdc_J, only : acdc_driver
 	real(kind(1.d0)), intent(inout) :: c_vapor(n_neutral_monomers)              ! vapor concentrations (1/m^3)
 	real(kind(1.d0)), intent(in) :: cs_ref				! reference coagulation sink (1/s)
 	real(kind(1.d0)), intent(in) :: temp				! temperature (K)
-	real(kind(1.d0)), intent(in) :: rh				    ! Relative humidity g/kg
+	real(kind(1.d0)), intent(in) :: rh				    ! Relative humidity (%)
 	real(kind(1.d0)), intent(in) :: ipr					! ion production rate (1/s/m^3)
     real(kind(1.d0)), intent(in) :: t_sim, t_tot		! simulation time and total accumulated time (s)
 	

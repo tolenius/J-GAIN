@@ -13,7 +13,7 @@ use get_acdc_J, only : acdc_plugin
 	real(kind(1.d0)) :: ipr				                            ! ion production rate (m^-3 s^-1)
     real(kind(1.d0)) :: j_acdc			                            ! simulated formation rate (m^-3 s^-1)
 	real(kind(1.d0)) :: diameter_acdc	                            ! mass diameter of the formed particles (m)
-	real(kind(1.d0)) :: rh	                                        ! relative humidity g/kg
+	real(kind(1.d0)) :: rh	                                        ! relative humidity (%)
     
     character(len=11), dimension(n_neutral_monomers) :: str_vapor
     integer :: i
@@ -45,7 +45,7 @@ use get_acdc_J, only : acdc_plugin
     call acdc_plugin(names_vapor,c_vapor,cs_ref,temp,rh,ipr,60.d0,0.d0,j_acdc,diameter_acdc)
     
     ! Values in cm^-3 (easily readable)
-    write(*,'(*(a20,1x))') str_vapor(:)(:), 'CS_ref (s^-1)', 'T (K)', 'IPR (cm^-3 s^-1)', 'J (cm^-3 s^-1)', '(RH (g kh^-1))'
+    write(*,'(*(a20,1x))') str_vapor(:)(:), 'CS_ref (s^-1)', 'T (K)', 'IPR (cm^-3 s^-1)', 'J (cm^-3 s^-1)', '(RH (%))'
     write(*,'(*(es20.5e4,1x))') c_vapor*1.d-6, cs_ref, temp, ipr*1.d-6, j_acdc*1.d-6,rh
 	
 	

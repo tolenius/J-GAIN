@@ -65,8 +65,9 @@ subroutine sources_and_constants(neqn,source,isconst,fitted)
     
 	real(kind(1.d0)) :: source(neqn)
 	logical :: isconst(neqn)
-	integer :: neqn, fitted(neqn,0:neqn), cluster_numbers(n_1A_clusters), n, i
+	integer :: neqn, fitted(neqn,0:neqn), n, i
     integer :: n_monomers(n_monomer_types)
+    !integer :: cluster_numbers(n_1A_clusters)
 	
 	source = 0.d0								! Initialize all source terms to 0
 	isconst = .false.							! Initialize all concentrations to vary freely according to the eqs.
