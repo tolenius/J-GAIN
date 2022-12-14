@@ -33,7 +33,7 @@ program single_table_log
 		serial_lookup%table_lookup%isLog10 = .FALSE.
 	end if 
 	
-    ! fill the actual values 
+    ! 
     lookfor = (/11.D0,14D0,298.15D0/) ! Compare to  (/1.D11,1.D14,298.15D0/) in single_table.f90
   
     call serial_lookup_lookup(serial_lookup,lookfor,interpVals)

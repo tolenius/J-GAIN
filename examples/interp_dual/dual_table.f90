@@ -7,6 +7,16 @@ program single_table
     real(kind=rk), allocatable,dimension(:) :: lookfor,interpVals,lookfor_2nd,interpVals_2nd
     type(type_serial_lookup) :: serial_lookup,serial_lookup_2nd
 	integer :: i
+	logical                 ::  interp_table_log
+	logical                 ::  interp_indep_log
+	
+	
+	!True: interplate log10 of the table values (adviced for ACDC). 
+	!False: interpolate the actual values 
+    interp_table_log  =.TRUE.
+    !
+	! TRUE: consider the values 
+	interp_indep_log = .TRUE. 
 	
 	!
 	call serial_lookup_init("../tables/lookup.desc","../tables/lookup.bin",serial_lookup)
@@ -18,10 +28,28 @@ program single_table
     allocate(lookfor_2nd(serial_lookup_2nd%table_lookup%dimsCount))
     allocate(interpVals_2nd(serial_lookup_2nd%table_lookup%varsCount))
 
-    ! fill the actual values 
-    lookfor = (/1.D11,1.D14,298.15D0/)  
+
+	!
+	if(interp_indep_log) then 
+		serial_lookup%table_lookup%isLog10 = .FALSE. 
+		serial_lookup_2nd%table_lookup%isLog10 = .FALSE. 
+    end if 
 	
-    lookfor_2nd = (/1.D11,1.D13,298.15D0/)  
+	
+    !
+	if (interp_table_log) then 
+	    serial_lookup%table_lookup%tbl = dlog10(serial_lookup%table_lookup%tbl)
+		serial_lookup%table_lookup%isLog10 = .FALSE.
+	    serial_lookup_2nd%table_lookup%tbl = dlog10(serial_lookup_2nd%table_lookup%tbl)
+		serial_lookup_2nd%table_lookup%isLog10 = .FALSE.		
+	end if 
+	
+
+	
+    !
+    lookfor = (/13.D0,15.D0,298.15D0/)  
+	
+    lookfor_2nd = (/13.D0,14.D0,298.15D0/)  
   
     call serial_lookup_lookup(serial_lookup,lookfor,interpVals)
     call serial_lookup_lookup(serial_lookup_2nd,lookfor_2nd,interpVals_2nd)
@@ -41,6 +69,7 @@ program single_table
 		   interpVals = 0;
 		end if 
 	end do 
+	!
     write(*,*) "Second table:" 
 	do i=1,serial_lookup_2nd%table_lookup%dimsCount
 	    write(*,*) trim(serial_lookup_2nd%table_lookup%indepVarNames(i))//": ", serial_lookup_2nd%inrange(i)
@@ -55,7 +84,11 @@ program single_table
     write(*,*) 
     write(*,*) "interpolated values are (Asuming the output is of the same dimensions):" 
 	do i=1,serial_lookup%table_lookup%varsCount
-	    write(*,*) trim(serial_lookup%table_lookup%depVarNames(i))//": ", interpVals(i) + interpVals_2nd(i)
+	    if (interp_table_log) then 
+	        write(*,*) trim(serial_lookup%table_lookup%depVarNames(i))//": ", 10.**interpVals(i) + 1.**interpVals_2nd(i)
+		else 
+		    write(*,*) trim(serial_lookup%table_lookup%depVarNames(i))//": ", interpVals(i) + interpVals_2nd(i)
+	    end if 		
 	end do
 
 	
