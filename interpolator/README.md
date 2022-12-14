@@ -1,30 +1,36 @@
-# NN: The look-up table interpolator
+# Look-up table interpolator
 
-The look-up table interpolator can be readily coupled to a host model through a provided example routine. The user needs to (1) define the used table(s), and (2) set the input parameters related to the table(s).
+The interpolator is built by
+```console
+$ ./build-interpolator.sh
+```
+Examples of routines for calling the interpolator within a host model are given in the 'examples' folder. The user needs to (1) define the used table(s), (2) determine whether linear/logarithmic axes are used, and (3) set the input parameters related to the table(s) and decide how out-of-range values are treated. These settings are clarified below, and demonstrated in the example routines.
 
-**Note**: The codes have been compiled and tested using **xxx: WHICH GFORTRAN VERSION?**
+## Selecting the look-up tables and defining axes scales
 
-## Selecting the look-up tables
+The tables are loaded by an initialization routine (inputting the path and names of the table and descriptor files), as shown in the example programs. The user can define if parameters are interpolated along linear or logarithmic axes. This choice can improve the interpolation accuracy: we recommend using logarithmic scale for the formation rate, and for the independent parameters that are generally defined as logarithmic in the table generator namelist, namely the vapor concentrations, the cluster sink, and the ion production rate.
 
-The tables are selected by filling in the directory path and names of the table and descriptor files in namelist.nml.
+In the examples, linear/logarithmic interpolation is chosen according to 2 logical variables: one for the formation rate, and one for the (logarithmic) independent parameters.
 
-The namelist also includes a logical variable for determining if the formation rate is interpolated on a logarithmic instead of a linear scale; by default this is set to  logarithmic (.true.) as this generally gives more accurate results. (An independent parameter is interpolated on a logarithmic scale if the parameter is defined as 'logarithmic'; see the instructions for the table generator.)
+**Note**: When parameters that are defined as logarithmic upon generation (i.e. placed evenly on a logarithmic scale) are set to be interpolated along logarithmic axis, their input values must be given as base10-logarithms of the actual values, instead of using the actual values.
 
-**xxx: How are several tables defined?**
+## Setting the input parameters and treating out-of-range values
 
-**xxx: How can alternate or additive tables be defined? We need to include an example of this.**
+The interpolation routine is simply called by the values of the independent parameters related to the table(s), that need to be in the same order as they appear in the table descriptor file. By default, the molecular model implementation of the table generator assumes SI units for all parameters.
 
-## Setting the input parameters
+The interpolation returns the interpolated value for the formation rate, as well as information on the variables. Most importantly, the output includes a logical variable that tells if the input value of an independent parameter is within the table range, or below or above the limits. Also information on if which parameters correspond to vapor concentrations is included. These can be used to determine how to treat cases with value(s) outside the range. We recommend the following for out-of-range input:
 
-The example program demonstrates loading the table(s) and calling the interpolator for an example case of particle formation from H<sub>2</sub>SO<sub>4</sub> and NH<sub>3</sub>. The program contains an example of a subroutine with the independent parameters as input and the interpolated formation rate as output. Here, the input parameters 'A', 'N', 'CS', 'T', and 'IPR' correspond to [H<sub>2</sub>SO<sub>4</sub>], [NH<sub>3</sub>], cluster scavenging sink, temperature, and ion pair production rate.
+* If vapor concentration value(s) is/are below the lower limit(s) of the table, set the formation rate to zero (the lower limits should also be set so that effectively no particle formation is expected at concentrations below them)
+* Otherwise, use the interpolated value (obtained by fixing the value of the independent parameter to the minimum/maximum limit of the table)
 
-The user needs to modify the input parameters to correspond to the used table(s). All input and output are in SI units.
+## Example routines
 
-## Treating values outside the table
+All example programs in /examples/ apply simple, pre-generated (dummy) tables in /examples/tables/, and can be tested by running in the build script in each folder.
 
-The treatment of cases with independent parameter values that fall outside the range of the look-up table is determined by variable 'beyond_limits_policy' in the example program. This array contains a value for each input parameter.
+### Example of default implementation
 
-Currently implemented values are:
+The case in /examples/interp_dual/ demonstrates the application of two additive tables (that would in practice correspond to different chemical pathways). The case includes the treatment of axes scales and out-of-range values, as discussed above.
 
-* 0 - The value of the independent parameter is set to the minimum/maximum limit of the table when the input value is below/over the table limits
-* 1 - Otherwise as 0, but zero J is returned when the parameter is below the lower limit of the table; this option should be used for vapor concentrations and the lower limits set so that effectively no particle formation is expected at concentrations below the limits
+### Examples of linear/logarithmic interpolation
+
+Folders /examples/interp_single/ and /examples/interp_single_log/ give examples of the details in choosing linear/logarithmic interpolation axes applying one table. Note that in actual applications, the recommended settings need to be used (see above).
