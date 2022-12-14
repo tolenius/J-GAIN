@@ -13,7 +13,7 @@ rh_values=(20 30 40)       ## (%)  will not be used if variable_temperature=1
 
 ## Files below should be in the input Folder
 cluster_file_suffix="_input" # Make sure that the cluster file is compatible with the above choices.
-dip_file="dip_pol_298.15K_426clusters2016Apr25.txt"
+dip_file="dip_pol_298.15K_426clusters2016Apr25.txt" # Uded only if l_incl_ions is 1
 hs_file="HS298.15K_426clusters2016Apr25.txt"
 
 
@@ -92,13 +92,17 @@ for vapor in "${vapors[@]}"; do
     vapor_suffix+="$vapor"
 done
 cluster_file+="_neutral"
+dip_option=""
 if [ $l_incl_ions -eq 1 ]; then
     perl_opt_0+=" --variable_ion_source"
     cluster_file+="_neg_pos"
     vapor_suffix+="_ions"
+	dip_option="--dip $DIP_FILE_AF"
 else
     vapor_suffix+="_noions"
 fi
+
+
 cluster_file+=$cluster_file_suffix".inp"
 
 
@@ -116,7 +120,7 @@ if [ $variable_temperature -eq 1 ]; then
     # Generate the equations
     append_to_file_names=$vapor_suffix$suffix 
     #perl acdc_2021_02_22_daniel.pl --fortran --save_outgoing --variable_cs --cs exp_loss --exp_loss_exponent -1.6 --e ./Perl_input/HS298.15K_426clusters2016Apr25.txt --dip ./Perl_input/dip_pol_298.15K_426clusters2016Apr25.txt `echo "$perl_opt --i ./Perl_input/$cluster_file --append_to_file_names $append_to_file_names --append_to_subroutine_names $sub_suffix"`
-    perl $ACDC_PERL_AF --fortran --save_outgoing --variable_cs --cs exp_loss --exp_loss_exponent -1.6 --e $HS_FILE_AF --dip $DIP_FILE_AF `echo "$perl_opt --i $CLUSTER_FILE_AF --append_to_eq $append_to_file_names --append_to_eq_names $sub_suffix  --no_ambient"`
+    perl $ACDC_PERL_AF --fortran --save_outgoing --variable_cs --cs exp_loss --exp_loss_exponent -1.6 --e $HS_FILE_AF $dip_option `echo "$perl_opt --i $CLUSTER_FILE_AF --append_to_eq $append_to_file_names --append_to_eq_names $sub_suffix  --no_ambient"`
 
 else 
 
@@ -138,7 +142,7 @@ for temperature in ${temp_values[@]}; do
     # Generate the equations
     append_to_file_names=$vapor_suffix$suffix 
     #perl acdc_2021_02_22_daniel.pl --fortran --save_outgoing --variable_cs --cs exp_loss --exp_loss_exponent -1.6 --e ./Perl_input/HS298.15K_426clusters2016Apr25.txt --dip ./Perl_input/dip_pol_298.15K_426clusters2016Apr25.txt `echo "$perl_opt --i ./Perl_input/$cluster_file --append_to_file_names $append_to_file_names --append_to_subroutine_names $sub_suffix"`
-    perl $ACDC_PERL_AF --fortran --save_outgoing --variable_cs --cs exp_loss --exp_loss_exponent -1.6 --e $HS_FILE_AF --dip $DIP_FILE_AF `echo "$perl_opt --i ./Perl_input/$cluster_file  --append_to_eq $append_to_file_names --append_to_eq_names $sub_suffix  --no_ambient"`
+    perl $ACDC_PERL_AF --fortran --save_outgoing --variable_cs --cs exp_loss --exp_loss_exponent -1.6 --e $HS_FILE_AF $dip_option `echo "$perl_opt --i ./Perl_input/$cluster_file  --append_to_eq $append_to_file_names --append_to_eq_names $sub_suffix  --no_ambient"`
  
   done 
 done 
