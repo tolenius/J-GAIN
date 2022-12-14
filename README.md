@@ -37,7 +37,7 @@ If you use the codes provided in this repository in any study, please cite the f
 
 This project is licensed under the terms of the GNU General Public License v3.0, as provided with this repository.
 
-The table generator also applies the following open-source routines: the molecular cluster population dynamics program Atmospheric Cluster Dynamics Code (ACDC; GPL 3), and the Fortran VODE solver (In the Public Domain; IPD). For these programs, the original license or acknowledgement is found in the same folder where the program source code is located and must not be separated from the source code.
+The table generator also applies the following open-source routines: the molecular cluster population dynamics program Atmospheric Cluster Dynamics Code (ACDC; GPL 3), and the Fortran VODE solver (In the Public Domain; IPD). For these programs, the original license or acknowledgement (if not the same as for J-GAIN) is found in the same folder where the program source code is located and must not be separated from the source code.
 
 ## Authors
 
