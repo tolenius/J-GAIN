@@ -42,8 +42,7 @@ SRC_AD=$ACDC_DIR/src
 GSRC_AD=$ACDC_DIR/gsrc
 INPUT_AD=$ACDC_DIR/input
 
-ACDC_PERL_AF=$SCR_AD/acdc_2021_09_28.pl
-#ACDC_PERL_AF=$SCR_AD/acdc_2021_02_22_daniel.pl
+ACDC_PERL_AF=$SCR_AD/acdc_2022_11_24.pl
 DIP_FILE_AF=$INPUT_AD/$dip_file
 HS_FILE_AF=$INPUT_AD/$hs_file
 
@@ -119,8 +118,7 @@ if [ $variable_temperature -eq 1 ]; then
     suffix="_no_rh" 
     # Generate the equations
     append_to_file_names=$vapor_suffix$suffix 
-    #perl acdc_2021_02_22_daniel.pl --fortran --save_outgoing --variable_cs --cs exp_loss --exp_loss_exponent -1.6 --e ./Perl_input/HS298.15K_426clusters2016Apr25.txt --dip ./Perl_input/dip_pol_298.15K_426clusters2016Apr25.txt `echo "$perl_opt --i ./Perl_input/$cluster_file --append_to_file_names $append_to_file_names --append_to_subroutine_names $sub_suffix"`
-    perl $ACDC_PERL_AF --fortran --save_outgoing --variable_cs --cs exp_loss --exp_loss_exponent -1.6 --e $HS_FILE_AF $dip_option `echo "$perl_opt --i $CLUSTER_FILE_AF --append_to_eq $append_to_file_names --append_to_eq_names $sub_suffix  --no_ambient"`
+    perl $ACDC_PERL_AF --fortran --save_outgoing --variable_cs --cs exp_loss --exp_loss_exponent -1.6 --exp_loss_ref_size 0.55 --e $HS_FILE_AF $dip_option `echo "$perl_opt --i $CLUSTER_FILE_AF --append_to_eq $append_to_file_names --append_to_eq_names $sub_suffix  --no_ambient"`
 
 else 
 
@@ -141,8 +139,7 @@ for temperature in ${temp_values[@]}; do
     
     # Generate the equations
     append_to_file_names=$vapor_suffix$suffix 
-    #perl acdc_2021_02_22_daniel.pl --fortran --save_outgoing --variable_cs --cs exp_loss --exp_loss_exponent -1.6 --e ./Perl_input/HS298.15K_426clusters2016Apr25.txt --dip ./Perl_input/dip_pol_298.15K_426clusters2016Apr25.txt `echo "$perl_opt --i ./Perl_input/$cluster_file --append_to_file_names $append_to_file_names --append_to_subroutine_names $sub_suffix"`
-    perl $ACDC_PERL_AF --fortran --save_outgoing --variable_cs --cs exp_loss --exp_loss_exponent -1.6 --e $HS_FILE_AF $dip_option `echo "$perl_opt --i ./Perl_input/$cluster_file  --append_to_eq $append_to_file_names --append_to_eq_names $sub_suffix  --no_ambient"`
+    perl $ACDC_PERL_AF --fortran --save_outgoing --variable_cs --cs exp_loss --exp_loss_exponent -1.6 --exp_loss_ref_size 0.55 --e $HS_FILE_AF $dip_option `echo "$perl_opt --i ./Perl_input/$cluster_file  --append_to_eq $append_to_file_names --append_to_eq_names $sub_suffix  --no_ambient"`
  
   done 
 done 

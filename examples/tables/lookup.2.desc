@@ -3,7 +3,7 @@
  Var Names
  nucl
  Var Units
- molecule/m^3
+ particles/m^3/s
  Indep Vars Count (dimCount)
            3
  Dims
