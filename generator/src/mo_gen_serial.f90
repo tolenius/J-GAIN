@@ -77,7 +77,7 @@ subroutine genLookupTableFunc1(gen_config_ranges,table)
 	else 
 	   RH = -1
 	end if  
-	
+    
     do i=1,gen_config_ranges%vapours_count
 	   vapours_consentrations(i) = gen_config_ranges%varSteps(gen_config_ranges%vapours_indices(i))%steps(loopVals(gen_config_ranges%vapours_indices(i)))
 	end do 

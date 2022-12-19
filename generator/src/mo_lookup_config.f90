@@ -304,7 +304,7 @@ implicit none
 	    do i=1,indepCount
 	       if (trim(varNames(i)) == "CS"  ) gen_config_ranges%idxCS   = i
 	       if (trim(varNames(i)) == "T"   ) gen_config_ranges%idxT    = i
-	       if (trim(varNames(i)) == "RH " ) gen_config_ranges%idxRH   = i
+	       if (trim(varNames(i)) == "RH" ) gen_config_ranges%idxRH   = i
 	       if (trim(varNames(i)) == "IPR" ) gen_config_ranges%idxIPR  = i
 	    end do 
 	    ! Check mandatory variables 

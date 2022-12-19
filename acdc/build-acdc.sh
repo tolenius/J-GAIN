@@ -252,7 +252,7 @@ popd
 
 if [ $variable_temperature -eq 1 ]; then 
   suffix="_no_rh" 
-  farr=(acdc_equations${vapor_suffix}_$suffix.f90)
+  farr=(acdc_equations${vapor_suffix}$suffix.f90)
 else
    farr=()
    for rh in ${rh_values[@]}; do 
@@ -293,7 +293,7 @@ $FC $FCFLAGS -c $SRC_AD/$F.f90 -o $WORK_AD/$F.o  -I$INCLUDE_AD  -J$INCLUDE_AD
 
 if [ $variable_temperature -eq 1 ]; then 
        suffix="_no_rh"
-	   F=acdc_equations${vapor_suffix}_$suffix
+	   F=acdc_equations${vapor_suffix}$suffix
        $FC $FCFLAGS -c $GSRC_AD/$F.f90 -o $WORK_AD/$F.o  -I$INCLUDE_AD  -J$INCLUDE_AD    
  
 else 

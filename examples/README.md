@@ -3,6 +3,7 @@
 This folder contains the following examples:
 
 * gen_serial: run the table generator in serial
+* gen_serial_rh: run the table generator in serial with RH included as an independent variable. Build acdc with variable_temperature=0
 * gen_mpi: run the table generator in parallel using mpi
 * interp_dual: example of a practical implementation of the interpolator
 * interp_single: example of simple interpolation using linear interpolation axes

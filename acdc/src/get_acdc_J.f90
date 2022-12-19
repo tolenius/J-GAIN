@@ -9,7 +9,7 @@ subroutine acdc_plugin(names_vapor,c_vapor,cs_ref,temp,rh,ipr,t_sim,t_tot,j_acdc
 use acdc_simulation_setup, only : get_system_size, get_vapor_indices                ! parameters related to the simulation system size
 use acdc_simulation_setup, only : group_size_bins, nbins
 use acdc_simulation_setup, only : solve_ss, use_solver                              ! logicals for the solution approaches
-use acdc_system, only : small_set_mode, n_neutral_monomers, n_charges, nclust_max   ! simulation mode and numbers of vapors and charging states
+use acdc_system, only : variable_temp, small_set_mode, n_neutral_monomers, n_charges, nclust_max   ! simulation mode and numbers of vapors and charging states
 use driver_acdc_J, only : acdc_driver
 
 	implicit none
@@ -44,8 +44,18 @@ use driver_acdc_J, only : acdc_driver
 	integer, save :: ipar(4)							! parameters for re-calling the monomer settings and rate constants
 	logical, save :: firstcall = .true.
 	integer :: i
-
-
+    if ((variable_temp .eqv. .false.) .and. (rh < 0.)) then 
+	   write(*,*) "ACDC is configured to have relative humidity (RH), but a negative RH is given"
+	   write(*,*) "will stop."
+	   stop 1
+	end if 
+	
+    if (( variable_temp .eqv. .true.) .and. (rh >= 0)) then 
+	   write(*,*) "ACDC is configured to NOT have relative humidity (RH), but a non-negative RH is given"
+	   write(*,*) "will stop."
+	   stop 1
+	end if 
+	
 	if (firstcall) then
 	
 		firstcall = .false.
