@@ -139,7 +139,7 @@ for temperature in ${temp_values[@]}; do
     
     # Generate the equations
     append_to_file_names=$vapor_suffix$suffix 
-    perl $ACDC_PERL_AF --fortran --save_outgoing --variable_cs --cs exp_loss --exp_loss_exponent -1.6 --exp_loss_ref_size 0.55 --e $HS_FILE_AF $dip_option `echo "$perl_opt --i ./Perl_input/$cluster_file  --append_to_eq $append_to_file_names --append_to_eq_names $sub_suffix  --no_ambient"`
+    perl $ACDC_PERL_AF --fortran --save_outgoing --variable_cs --cs exp_loss --exp_loss_exponent -1.6 --exp_loss_ref_size 0.55 --e $HS_FILE_AF $dip_option `echo "$perl_opt --i $CLUSTER_FILE_AF  --append_to_eq $append_to_file_names --append_to_eq_names $sub_suffix  --no_ambient"`
  
   done 
 done 
@@ -252,7 +252,7 @@ popd
 
 if [ $variable_temperature -eq 1 ]; then 
   suffix="_no_rh" 
-  farr=(acdc_equations${vapor_suffix}$suffix.f90)
+  farr=(acdc_equations${vapor_suffix}_$suffix.f90)
 else
    farr=()
    for rh in ${rh_values[@]}; do 
@@ -293,14 +293,14 @@ $FC $FCFLAGS -c $SRC_AD/$F.f90 -o $WORK_AD/$F.o  -I$INCLUDE_AD  -J$INCLUDE_AD
 
 if [ $variable_temperature -eq 1 ]; then 
        suffix="_no_rh"
-	   F=acdc_equations${vapor_suffix}$suffix
+	   F=acdc_equations${vapor_suffix}_$suffix
        $FC $FCFLAGS -c $GSRC_AD/$F.f90 -o $WORK_AD/$F.o  -I$INCLUDE_AD  -J$INCLUDE_AD    
  
 else 
    for rh in ${rh_values[@]}; do 
      for temp in ${temp_values[@]}; do 
        suffix=$((1000*$temp + $rh))
-	   F=acdc_equations${vapor_suffix}$suffix
+	   F=acdc_equations${vapor_suffix}_$suffix
        $FC $FCFLAGS -c $GSRC_AD/$F.f90 -o $WORK_AD/$F.o  -I$INCLUDE_AD  -J$INCLUDE_AD    
      done   
    done 
@@ -327,118 +327,4 @@ ar cr $LIB_AD/libacdc.a $WORK_AD/*.o
 F=run_acdc_J_example
 $FC $FCFLAGS   $SRC_AD/$F.f90 -o $BIN_AD/$F.exe -lacdc -I$INCLUDE_AD  -J$INCLUDE_AD  -L$LIB_AD
 	
-	
-
-######## Generate make file 
-####123 
-####123 if [ $variable_temperature -eq 1 ]; then 
-####123   suffix="_no_rh" 
-####123   oarr=(acdc_equations${vapor_suffix}$suffix.o)
-####123   farr=(acdc_equations${vapor_suffix}$suffix.f90)
-####123 else
-####123    oarr=()
-####123    farr=()
-####123    for rh in ${rh_values[@]}; do 
-####123      for temp in ${temp_values[@]}; do 
-####123        suffix=$((1000*$temp + $rh))
-####123        oarr+=(acdc_equations${vapor_suffix}_$suffix.o) 
-####123 	   farr+=(acdc_equations${vapor_suffix}_$suffix.f90)
-####123      done   
-####123    done 
-####123 fi 
-####123 
-####123 
-####123 
-####123 
-####123 
-####123 
-####123 
-####123 make_output=my_Makefile
-####123 make_incl=acdc_include.mk
-####123 
-####123 
-####123 
-####123 echo '
-####123 FC = gfortran
-####123 FCFLAGS = -O0 -g -ffree-line-length-none -cpp -fcheck=bounds -finit-local-zero
-####123 
-####123 run = run_acdc_J_example.f90
-####123 get_J = get_acdc_J.f90
-####123 driver = driver_acdc_J.f90
-####123 driver_wrapper = driver_acdc_J_wrapper.f90
-####123 system = acdc_system.f90
-####123 
-####123 ' > $make_output
-####123 echo " 
-####123 run: run_acdc_J.o get_acdc_J.o driver.o driver_wrapper.o acdc_system.o acdc_simulation_setup.o solution_settings.o vode.o vodea.o ${oarr[@]}" >> $make_output
-####123 echo "ACDC_OBJ = get_acdc_J.o driver.o driver_wrapper.o acdc_system.o acdc_simulation_setup.o solution_settings.o vode.o vodea.o ${oarr[@]}" > $make_incl
-####123 
-####123 
-####123 
-####123 echo '	$(FC) $(FCFLAGS) $^ -o $@
-####123 
-####123 run_acdc_J.o: $(run) get_acdc_J.o acdc_simulation_setup.o
-####123 	$(FC) $(FCFLAGS) -c $< -o $@
-####123 
-####123 get_acdc_J.o: $(get_J) driver.o driver_wrapper.o acdc_system.o acdc_simulation_setup.o
-####123 	$(FC) $(FCFLAGS) -c $< -o $@
-####123 
-####123 driver.o: $(driver) acdc_system.o acdc_simulation_setup.o solution_settings.o
-####123 	$(FC) $(FCFLAGS) -c $< -o $@
-####123 	
-####123 driver_wrapper.o: $(driver_wrapper) driver.o acdc_system.o acdc_simulation_setup.o solution_settings.o
-####123 	$(FC) $(FCFLAGS) -c $< -o $@
-####123 	
-####123 acdc_system.o: $(system)
-####123 	$(FC) $(FCFLAGS) -c $< -o $@
-####123 ' >> $make_output
-####123 
-####123 if [ $variable_temperature -eq 1 ]; then 
-####123        suffix="_no_rh"
-####123        echo "acdc_equations${vapor_suffix}$suffix.o: acdc_equations${vapor_suffix}$suffix.f90 acdc_simulation_setup.o" >> $make_output
-####123        echo '	$(FC) $(FCFLAGS) -c $< -o $@' >> $make_output
-####123        echo "" >> $make_output
-####123 else 
-####123    for rh in ${rh_values[@]}; do 
-####123      for temp in ${temp_values[@]}; do 
-####123        suffix=$((1000*$temp + $rh))
-####123        echo "acdc_equations${vapor_suffix}_$suffix.o: acdc_equations${vapor_suffix}_$suffix.f90 acdc_simulation_setup.o" >> $make_output
-####123        echo '	$(FC) $(FCFLAGS) -c $< -o $@' >> $make_output
-####123        echo "" >> $make_output
-####123    
-####123      done   
-####123    done 
-####123 fi 
-####123 
-####123 echo 'acdc_simulation_setup.o: acdc_simulation_setup.f90 acdc_system.o
-####123 	$(FC) $(FCFLAGS) -c $< -o $@
-####123 
-####123 solution_settings.o: solvers/solution_settings.f90
-####123 	$(FC) $(FCFLAGS) -c $< -o $@
-####123 
-####123 vode.o: solvers/vode.f
-####123 	$(FC) $(FCFLAGS) -std=legacy -c $< -o $@
-####123 
-####123 vodea.o: solvers/vodea.f
-####123 	$(FC) $(FCFLAGS) -std=legacy -c $< -o $@
-####123 
-####123 .PHONY: clean
-####123 
-####123 clean:
-####123 	rm -f *.o *.mod run
-####123 
-####123 cleanall:
-####123 	rm -f *.o *.mod run  $(driver_wrapper) $(system) \' >> $make_output
-####123 echo "${farr[@]}" >> $make_output
-####123 
-####123 
-####123 
-####123 
-####123 
-####123 
-####123 
-####123 
-####123 
-##########################################################################################################
-
 
