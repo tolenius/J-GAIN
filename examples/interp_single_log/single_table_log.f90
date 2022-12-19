@@ -29,13 +29,19 @@ program single_table_log
 	
     !
 	if (interp_table_log) then 
+	    where (serial_lookup%table_lookup%tbl.eq.0.0)
+			serial_lookup%table_lookup%tbl = 1.d-20
+		end where		
 	    serial_lookup%table_lookup%tbl = dlog10(serial_lookup%table_lookup%tbl)
-		serial_lookup%table_lookup%isLog10 = .FALSE.
 	end if 
 	
     ! 
-    lookfor = (/11.D0,14D0,298.15D0/) ! Compare to  (/1.D11,1.D14,298.15D0/) in single_table.f90
-  
+	if(interp_indep_log)
+        lookfor = (/11.D0,14D0,298.15D0/) ! Compare to  (/1.D11,1.D14,298.15D0/) in single_table.f90
+    else 
+	    lookfor = (/1.D11,1.D14,298.15D0/)
+	end if 
+	
     call serial_lookup_lookup(serial_lookup,lookfor,interpVals)
      
 

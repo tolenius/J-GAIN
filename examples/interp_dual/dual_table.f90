@@ -48,7 +48,14 @@ program single_table
     end if 
 	
 	if(interp_table_log) then 
+	    where (serial_lookup%table_lookup%tbl.eq.0.0)
+			serial_lookup%table_lookup%tbl = 1.d-20
+		end where
 	    serial_lookup%table_lookup%tbl = dlog10(serial_lookup%table_lookup%tbl)
+		!
+	    where (serial_lookup_2nd%table_lookup%tbl.eq.0.0)
+			serial_lookup_2nd%table_lookup%tbl = 1.d-20
+		end where		
 	    serial_lookup_2nd%table_lookup%tbl = dlog10(serial_lookup_2nd%table_lookup%tbl)
 	end if
 
