@@ -34,3 +34,6 @@ The case in /examples/interp_dual/ demonstrates the application of two additive 
 ### Examples of linear/logarithmic interpolation
 
 Folders /examples/interp_single/ and /examples/interp_single_log/ give examples of the details in choosing linear/logarithmic interpolation axes applying one table. Note that in actual applications, the recommended settings need to be used (see above).
+
+## Note
+When using the Intel compiler `ifort`, add the flag `-assume byterec` to ensure the code runs as expected.

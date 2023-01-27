@@ -35,7 +35,6 @@ module mo_table_lookup
         integer(kind=ik) :: valuesCount ! mult idims      
 	    real(kind=rk), allocatable, dimension(:) :: maxval_plus_epsilon ! independent 
 	    real(kind=rk), allocatable, dimension(:) :: minval_minus_epsilon ! independent 
-
     end type type_table_lookup    
 ! module variables 
 
@@ -56,9 +55,6 @@ module mo_table_lookup
        module procedure type_table_lookup_finialize    
     end interface finalize
     
-    
-    real(kind=rk), parameter :: myEpsilon = 1.E-20 ! dependent
-
 contains
 
 ! Type table_lookup Operations
@@ -81,7 +77,6 @@ subroutine type_table_lookup_finialize(table_lookup)
 	
 	if(allocated(table_lookup%maxval_plus_epsilon ))  deallocate(table_lookup%maxval_plus_epsilon )
 	if(allocated(table_lookup%minval_minus_epsilon))  deallocate(table_lookup%minval_minus_epsilon)
-
 end subroutine type_table_lookup_finialize
 
       
@@ -243,7 +238,7 @@ subroutine type_table_lookup_find_surrounding_indices(table_lookup,lookfor,lowId
 	        else 
 	            inrange(i) = 0
                 lowIdxs(i) = FLOOR((zlookfor-table_lookup%minVals(i))/table_lookup%steps(i)) + 1
-                if (lowIdxs(i) < table_lookup%idims(i)) then 
+                if (lowIdxs(i) < table_lookup%idims(i) .and. lowIdxs(i) > 0 ) then 
                     if (table_lookup%isLog10(i)) then 
                         zlowloc     = 10**(table_lookup%minVals(i) + ((lowIdxs(i) - 1)*table_lookup%steps(i)))
                         znextlloc   = 10**(table_lookup%minVals(i) + ((lowIdxs(i))*table_lookup%steps(i)))
@@ -254,8 +249,13 @@ subroutine type_table_lookup_find_surrounding_indices(table_lookup,lookfor,lowId
                         / (table_lookup%steps(i))
                     end if               
                     upIdxs(i) = lowIdxs(i) + 1
-                else
-                    upIdxs(i) = lowIdxs(i)  
+                elseif ( lowIdxs(i) < 1 ) then 
+				    lowIdxs(i) = 1
+	                upIdxs(i)  =  1   
+                    lowWghts(i) = 1
+                else 				
+                    lowIdxs(i) =  table_lookup%idims(i)  
+                    upIdxs(i)  =  table_lookup%idims(i)  
                     lowWghts(i) = 1
                 endif
 	        end if 
@@ -395,7 +395,7 @@ subroutine load_from_bin_file(descriptor_file_path,table_bin_file_path,table_loo
    end if 
    
    read(100,*)  !"totalCount   "
-   read(100,*)   table_lookup%valuesCount
+   read(100,*)  'table_lookup%valuesCount', table_lookup%valuesCount
        
    allocate(table_lookup%tbl(table_lookup%valuesCount,table_lookup%varsCount))
  

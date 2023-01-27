@@ -8,7 +8,7 @@ SCRIPT_PATH=$(realpath $0)
 INT_DIR=$(dirname $SCRIPT_PATH)
 
 FC=gfortran
-OPTS="-g -ffree-line-length-none -cpp -fcheck=all -ffpe-trap=invalid,zero,overflow -O3"
+FCFLAGS="-g -ffree-line-length-none -cpp -fcheck=all -ffpe-trap=invalid,zero,overflow -O3"
 
 
 
