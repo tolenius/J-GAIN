@@ -395,7 +395,7 @@ subroutine load_from_bin_file(descriptor_file_path,table_bin_file_path,table_loo
    end if 
    
    read(100,*)  !"totalCount   "
-   read(100,*)  'table_lookup%valuesCount', table_lookup%valuesCount
+   read(100,*)  table_lookup%valuesCount
        
    allocate(table_lookup%tbl(table_lookup%valuesCount,table_lookup%varsCount))
  
