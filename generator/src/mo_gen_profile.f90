@@ -47,6 +47,9 @@ subroutine genAndWriteProfileFunc1(gen_config_profile)
   integer :: k,inu,outu, readstat
   integer :: i, shift 
   character(len=200) :: header 
+  !
+  integer :: rc ! error code  
+      
   ! Body 
  
  
@@ -55,8 +58,12 @@ subroutine genAndWriteProfileFunc1(gen_config_profile)
   
   call getNewUnit(inu)
   call getNewUnit(outu)
-  open(unit = inu, file = trim(gen_config_profile%inputProfilePath), status="old")
-  open(unit = outu, file = trim(gen_config_profile%outputProfilePath), status="unknown")
+  open(unit = inu, file = trim(gen_config_profile%inputProfilePath), status="old", iostat=rc)
+  if (rc /= 0) stop ("Error: failed to open file: "//trim(gen_config_profile%inputProfilePath))
+
+  open(unit = outu, file = trim(gen_config_profile%outputProfilePath), status="unknown", iostat=rc)
+  if (rc /= 0) stop ("Error: failed to open file: "//trim(gen_config_profile%outputProfilePath))
+
   
   read(inu,'(A)',iostat = readstat)  header 
   write(outu,*)  trim(header) , " j_acdc"

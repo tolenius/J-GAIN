@@ -100,7 +100,7 @@ implicit none
     type(gen_config_ranges_type) , intent(inout) :: gen_config_ranges
     type(gen_config_profile_type), intent(inout) :: gen_config_profile 
     ! Local Variables 
-    integer indepCount, u 
+    integer:: indepCount, u 
     character(len=20), dimension(:), allocatable, target :: varNames
     character(len=20), dimension(:), allocatable, target :: units
     integer, dimension(:), allocatable, target :: dimensions
@@ -126,6 +126,8 @@ implicit none
 	!
 	integer :: i,j,k
 	real(dp) :: step
+	!
+	integer :: rc ! error code  
     
     ! NameLists
     namelist /shared/  indepCount,depCount,debug,diagOut,isProfileMode
@@ -161,9 +163,11 @@ implicit none
 
     call finalize(gen_config_ranges)
 	
-	
+	 
     call getNewUnit(u)
-    open(unit=u, file=trim(namelistFile), status='old')
+	write (*,*) "Opening file: "//trim(namelistFile)
+    open(unit=u, file=trim(namelistFile), status="old", iostat=rc)
+	if (rc /= 0) stop 'Error: failed to open file: ' // trim(namelistFile)
 
     isProfileMode = .false. 
     rewind(u)
@@ -180,7 +184,7 @@ implicit none
 	
 	
 	
-
+   
 	
 	if (isProfileMode) then 
 	!!!!!!!!!!!!!!!!!!!!!!! Profile Mode configs !!!!!!!!!!!!!!!!!!!!!!!!!

@@ -51,16 +51,21 @@ subroutine writeBin(gen_config_ranges,table)
   integer :: i
   integer :: du,bu  
   logical, allocatable , dimension(:)  :: dims_gt_1
+  !
+  integer :: rc ! error code 
+  character(len=500) :: file_name ! temp file name
+  
   
   dims_gt_1 = gen_config_ranges%dimensions > 1 
   ! first of all write the desciptor  file 
   
   if (debug) write(*,*) "Started: Create descriptor file"
   call getNewUnit(du)
-  
-  OPEN(unit = du ,file = trim(gen_config_ranges%outputDirectory)//"/"//trim(gen_config_ranges%outputFileBase)//".desc", &
-     & STATUS='unknown',ACTION='WRITE') 
-  
+  file_name = trim(gen_config_ranges%outputDirectory)//"/"//trim(gen_config_ranges%outputFileBase)//".desc"
+  OPEN(unit = du ,file = trim(file_name), &
+     & STATUS='unknown',ACTION='WRITE', iostat=rc) 
+  if (rc /= 0) stop "Error: failed to open file: "//trim(file_name)
+
   write(du,*) "Dep Vars Count (depCount)" 
   write(du,*) size(table,2)
   write(du,*) "Var Names" 
@@ -121,13 +126,20 @@ subroutine writeBin(gen_config_ranges,table)
   
   ! Writing the binary file 
   if (debug) write(*,*) "Started writing the binary file"
-  open(unit = bu, file = trim(gen_config_ranges%outputDirectory)//"/"//trim(gen_config_ranges%outputFileBase)//".bin",status="unknown",form="unformatted", access = "direct", recl = 4*size(table))
+  file_name = trim(gen_config_ranges%outputDirectory)//"/"//trim(gen_config_ranges%outputFileBase)//".bin"
+  open(unit = bu, file = trim(file_name),&
+    &status="unknown",form="unformatted", access = "direct", recl = 4*size(table), iostat=rc)
+  if (rc /= 0) stop "Error: failed to open file: "//trim(file_name)
+
+	
   write(bu,rec=1) table
   close(bu)
   
   if (debug) write(*,*) "Started writing the text file"
-  open(unit = bu, file = trim(gen_config_ranges%outputDirectory)//"/"//trim(gen_config_ranges%outputFileBase)//".txt",status="unknown")
-     
+  file_name = trim(gen_config_ranges%outputDirectory)//"/"//trim(gen_config_ranges%outputFileBase)//".txt"
+  open(unit = bu, file = trim(file_name),&
+    &status="unknown", iostat=rc)
+  if (rc /= 0) stop "Error: failed to open file: "//trim(file_name) 
   do i=1,gen_config_ranges%totalCount
     write(bu,*) i, table(i,1)
    ! write(bu,*) i,real(table(i,1))

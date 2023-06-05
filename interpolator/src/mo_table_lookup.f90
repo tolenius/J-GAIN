@@ -291,9 +291,13 @@ subroutine load_from_bin_file(descriptor_file_path,table_bin_file_path,table_loo
    character(len=200) :: ctemp
    real*4 , allocatable :: temp(:)
    !
+   integer :: rc ! error code  
+   !
    if (debug) write(*,*) '==== Entering load_from_text_file ===='
    !
-   open(100,file=trim(descriptor_file_path),status="old")
+   open(100,file=trim(descriptor_file_path),status="old", iostat=rc)
+   if (rc /= 0) stop "Error: failed to open file: "//trim(descriptor_file_path)
+
    
    call type_table_lookup_finialize(table_lookup)
  
@@ -410,7 +414,10 @@ subroutine load_from_bin_file(descriptor_file_path,table_bin_file_path,table_loo
    !allocate(table_lookup%tbl(table_lookup%valuesCount,table_lookup%varsCount))
    !allocate(temp(table_lookup%valuesCount,table_lookup%varsCount))
  
-   open(101,file=trim(table_bin_file_path),status="old",form="unformatted",access="direct", recl = 4*chunk_size)
+   open(101,file=trim(table_bin_file_path),status="old",form="unformatted",access="direct",&
+   recl = 4*chunk_size, iostat=rc)
+   if (rc /= 0) stop "Error: failed to open file: "//trim(table_bin_file_path)
+
    irec = 0 
    itemp = 0 
    do ivar =1,table_lookup%varsCount
