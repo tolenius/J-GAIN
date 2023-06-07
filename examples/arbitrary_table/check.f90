@@ -11,14 +11,14 @@ integer::i1,i2,i3,i4
 integer::j ! dependent variables 
 integer :: rc
 
-open(unit = 1000, file = 'kookup_3dep_4indep_cpp.bin',&
+open(unit = 1000, file = 'lookup_3dep_4indep_cpp.bin',&
     &status="old",form="unformatted", access = "direct", recl = 4*size(ct), iostat=rc)
 if (rc /= 0) stop "Error: failed to open file to read"
 
 read(1000,rec=1) ct
 close(1000)
 
-open(unit = 1000, file = 'kookup_3dep_4indep_fortran.bin',&
+open(unit = 1000, file = 'lookup_3dep_4indep_fortran.bin',&
     &status="old",form="unformatted", access = "direct", recl = 4*size(ft), iostat=rc)
 if (rc /= 0) stop "Error: failed to open file to read"
 

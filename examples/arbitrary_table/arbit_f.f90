@@ -25,7 +25,7 @@ do j = 1, depCount
   end do 
 end do 
 
-open(unit = 1000, file = 'kookup_3dep_4indep_fortran.bin',&
+open(unit = 1000, file = 'lookup_3dep_4indep_fortran.bin',&
     &status="unknown",form="unformatted", access = "direct", recl = 4*size(table), iostat=rc)
 if (rc /= 0) stop "Error: failed to open file to write"
 

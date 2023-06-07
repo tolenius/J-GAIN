@@ -24,7 +24,7 @@ int main() {
             }
         }
     }
-    std::ofstream file("kookup_3dep_4indep_cpp.bin", std::ios::binary);
+    std::ofstream file("lookup_3dep_4indep_cpp.bin", std::ios::binary);
     if (!file) {
         std::cout << "Error: failed to open file to write" << std::endl;
         return 1;

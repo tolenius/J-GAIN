@@ -40,6 +40,6 @@
  F
  F
  BinFile
- ./kookup_3dep_4indep.bin
+ ./lookup_3dep_4indep.bin
  totalCount  # 5*9*17*33
                  25245
