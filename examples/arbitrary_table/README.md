@@ -4,4 +4,5 @@ The code given in Fortran and C++ gives the same output files "kookup_3dep_4inde
 
 * To run the fortran code: bash run_f.sh
 * To run the C++ code: bash run_c.sh 
+* to check the output: bash run_check.sh | less 
 
