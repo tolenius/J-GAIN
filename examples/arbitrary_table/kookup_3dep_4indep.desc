@@ -1,0 +1,45 @@
+ Dep Vars Count (depCount)
+           3
+ Var Names
+ V1
+ V2
+ V3
+ Var Units
+ U1
+ U2
+ U3
+ Indep Vars Count (dimCount)
+           4
+ Dims
+          5
+          9
+          17
+		  33
+ Indep Vars Names
+ I1
+ I2
+ I3
+ I4
+ Indep Vars Units
+ IU1
+ IU2
+ IU3
+ IU4 
+ minVals,maxVals
+      0.11000000E+02      0.15000000E+02
+      0.14000000E+02      0.17000000E+02
+      0.29815000E+03      0.33015000E+03
+ isLog10  # Not important for the current example
+ F
+ F
+ F
+ F
+ isVapour  # Not important for the current example
+ F
+ F
+ F
+ F
+ BinFile
+ ./kookup_3dep_4indep.bin
+ totalCount  # 5*9*17*33
+                 25245
