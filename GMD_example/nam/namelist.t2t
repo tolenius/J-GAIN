@@ -1,0 +1,15 @@
+&interp
+ref_dir  = '../ref'
+ref_desc = 'lookup.ref.desc'
+ref_bin  = 'lookup.ref.bin'
+
+exp_dir  = '../exp'
+exp_desc = 'lookup.exp.desc'
+exp_bin  = 'lookup.exp.bin'
+write_ref  = .true.
+write_exp  = .true.
+result_file_path = 't2t.interp-logj2.jump1'
+jump_over=1
+benchmark=.False.
+linear_log_intep=.True.
+/
