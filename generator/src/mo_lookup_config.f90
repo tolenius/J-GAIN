@@ -87,7 +87,10 @@ end  type gen_config_ranges_type
    integer, parameter :: FORMAT_NC3=1
 contains
 
-
+!> @brief initlizaes the generator from namelist
+!! 
+!! @param[out]   gen_config_ranges    ranges and nature of the independent variables 
+!! @param[out]   gen_config_profile   informatioj about the position of the independent variables in the namelist 
 subroutine initConf(namelistFile, gen_config_ranges, gen_config_profile)
 use mo_runtime, only: abort
 use mo_utils, only: getNewUnit

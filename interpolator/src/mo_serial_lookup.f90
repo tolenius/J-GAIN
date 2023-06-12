@@ -39,6 +39,11 @@ module mo_serial_lookup
     
 contains    
 
+!> @brief initilize a serial lookup structure from a desc and a binary file
+!!
+!! @param[in]   descriptor_file_path     path to the descrriptor file 
+!! @param[in]   table_file_path          path to the binary file 
+!! @param[out]  serial_lookup            the lookup structure 
 subroutine type_serial_lookup_init_from_bin_file(descriptor_file_path,table_file_path,serial_lookup)
     use mo_table_lookup, only : load
     implicit none
@@ -52,7 +57,11 @@ subroutine type_serial_lookup_init_from_bin_file(descriptor_file_path,table_file
 	 
 end subroutine type_serial_lookup_init_from_bin_file
 
-
+!> @brief do the lookup job by calling the necessary subroutines.
+!!
+!! @param[in]   serial_lookup    the lookup structure. 
+!! @param[in]   lookfor          values of the independet variables.
+!! @param[out]  interpVals       the interpolated output values.            
 subroutine type_serial_lookup_lookupImpl(serial_lookup,lookfor,interpVals)
     use mo_table_lookup 
     implicit none
@@ -81,6 +90,8 @@ subroutine type_serial_lookup_lookupImpl(serial_lookup,lookfor,interpVals)
       
 end subroutine type_serial_lookup_lookupImpl
 
+!> @brief releases the allocated arrays.
+!!
 subroutine type_serial_lookup_finalize(serial_lookup)
     use mo_table_lookup, only : tble_finalize => finalize 
     implicit none 

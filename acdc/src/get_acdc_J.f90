@@ -3,7 +3,6 @@ module get_acdc_J
 implicit none
 
 contains
-
 subroutine acdc_plugin(names_vapor,c_vapor,cs_ref,temp,rh,ipr,t_sim,t_tot,j_acdc,diameter_acdc,c_out,c_bins)
 
 use acdc_simulation_setup, only : get_system_size, get_vapor_indices                ! parameters related to the simulation system size

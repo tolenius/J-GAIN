@@ -22,7 +22,7 @@ implicit none
 
 end subroutine genAndWriteProfileImp
 
-
+!> @brief the main function that calls every thing else. it generates the lookup table
 subroutine genAndWriteProfileFunc1(gen_config_profile)
   use mo_utils, only: advanceLoopsBy,getNewUnit 
   use mo_debug 

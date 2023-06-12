@@ -18,6 +18,8 @@ implicit none
   
 contains 
 
+!> @brief writes table to file
+!!
 subroutine writeTableImpl(gen_config_ranges,table)
   use mo_config, only : canWrite 
 implicit none 
@@ -41,7 +43,9 @@ implicit none
 
   
 end subroutine writeTableImpl
-  
+
+!> @brief write a file in binary format. it writes the descriptor file and the binary file
+!!
 subroutine writeBin(gen_config_ranges,table)
   implicit none 
   ! Arguments 

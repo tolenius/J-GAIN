@@ -57,7 +57,7 @@ module mo_table_lookup
     
 contains
 
-! Type table_lookup Operations
+!> @brief released allocated arrays.
 subroutine type_table_lookup_finialize(table_lookup)
     implicit none
     ! Arguments
@@ -79,7 +79,10 @@ subroutine type_table_lookup_finialize(table_lookup)
 	if(allocated(table_lookup%minval_minus_epsilon))  deallocate(table_lookup%minval_minus_epsilon)
 end subroutine type_table_lookup_finialize
 
-      
+!> @brief given the indices of the independent variables, this function return the index in the dependen valiable array (table)
+!! param[in] table_lookup    the structure that contains the table infomation
+!! param[in] indices         the indices of the indpendent variables
+!! param[out] tblIdx         the corresponding index in the loopkup table 
 subroutine type_table_lookup_find_table_index(table_lookup,indices,tblIdx)
     ! Find the index in the table type_table_lookup%tbl
     implicit none
@@ -104,12 +107,16 @@ subroutine type_table_lookup_find_table_index(table_lookup,indices,tblIdx)
     !depVals = table_lookup%tbl(tblIdx,:)
 end subroutine type_table_lookup_find_table_index
 
-
+!> @brief given independent variables indices, returns the corrosponding indices in the dependet table .
+!!
+!! param[in] table_lookup    the structure that contains the table infomation
+!! param[in] comIdxs         related to independent variables. First dimension is table_lookup%dimsCount the second is 2**table_lookup%dimsCount   
+!! param[out] tblIdx         the corresponding indices in the loopkup table 
 subroutine type_table_lookup_find_table_indices(table_lookup,comIdxs,tblIds)
     ! Find multiple indices in the table type_table_lookup%tbl
     implicit none
     type(type_table_lookup), intent(in) :: table_lookup
-    integer(kind=ik), dimension(:,:) , intent(in) :: comIdxs ! independent first index is table_lookup%dimsCount the second is 2**table_lookup%dimsCount
+    integer(kind=ik), dimension(:,:) , intent(in) :: comIdxs 
     integer(kind=ik), allocatable, dimension(:), intent(out) :: tblIds ! dependent
     ! 
     integer :: i,ml,k,n
@@ -136,7 +143,12 @@ subroutine type_table_lookup_find_table_indices(table_lookup,comIdxs,tblIds)
 end subroutine type_table_lookup_find_table_indices
 
 
-
+!> @brief gives the nearest index for each independent variable.
+!!
+!! param[in] table_lookup    the structure that contains the table infomation
+!! param[in] lookfor         independent variables actual value. 
+!! param[out] indices        in neares indices
+!! param[out] inrange        flags to show whether the given values falls the between the min and max of the corrosponding independent variables.
 subroutine type_table_lookup_find_nearest_index(table_lookup,lookfor,indices,inrange)
     implicit none 
     type(type_table_lookup), intent(in) :: table_lookup   
@@ -185,6 +197,15 @@ subroutine type_table_lookup_find_nearest_index(table_lookup,lookfor,indices,inr
    
 end subroutine type_table_lookup_find_nearest_index 
 
+!> @brief gives the indeices of the values that are just above or below the given value 
+!! of the independent variables and caculates weight based on distance to these values.
+!!
+!! param[in] table_lookup    the structure that contains the table infomation
+!! param[in] lookfor         independent variables actual value. 
+!! param[out] lowIdxs        lower bounds indices
+!! param[out] upIdxs         upper bound indices
+!! param[out] lowWghts       weights
+!! param[out] inrange        flags to show whether the given values falls the between the min and max of the corrosponding independent variables.
 subroutine type_table_lookup_find_surrounding_indices(table_lookup,lookfor,lowIdxs,upIdxs,lowWghts,inrange)
     implicit none 
     type(type_table_lookup), intent(in) :: table_lookup      
@@ -278,7 +299,11 @@ subroutine type_table_lookup_find_surrounding_indices(table_lookup,lookfor,lowId
 end subroutine type_table_lookup_find_surrounding_indices 
 
 
-! With  descriptor file 
+!> @brief loades the table stored in birary files given a descriptor file.
+!!
+!! param[in] descriptor_file_path   path of the descriptor file 
+!! param[in] table_bin_file_path    path to the binary file that contains the lookup table
+!! param[out] table_lookup          structuer filles from the desc and bin files.
 subroutine load_from_bin_file(descriptor_file_path,table_bin_file_path,table_lookup)
    implicit none 
    character(len=*), intent(in):: descriptor_file_path
@@ -458,6 +483,14 @@ subroutine load_from_bin_file(descriptor_file_path,table_bin_file_path,table_loo
    
 end subroutine load_from_bin_file
 
+!> @brief calcualtes the interpolation weights based on distances. Note: here whe have 2**dim whights used in the linear interpolations 
+!! where dim is the number of the varying independent variables.
+!!
+!! param[in] lowIdxs         indexes values just below the values to lookup 
+!! param[in] upIdxs          indexes values just above the values to lookup 
+!! param[in] lowWghts        weights based on disbace as an input
+!! param[out] comIdxs        indices to find the dpendent varables values to be used in the interpolation
+!! param[out] interpWghts    the actual weights used in the interpolation.
 subroutine type_table_lookup_find_interpolation_weights(lowIdxs,upIdxs,lowWghts,comIdxs,interpWghts)
     implicit none
     ! Note: This subroutine assumes that all indices and wights are correct   
@@ -513,7 +546,12 @@ subroutine type_table_lookup_find_interpolation_weights(lowIdxs,upIdxs,lowWghts,
     		
 end subroutine type_table_lookup_find_interpolation_weights
 
-
+!> @brief do the interpolation by simple multilication and summation .
+!!
+!! param[in] table_lookup    structure that contains the actual table. Linear interpolation is done here.
+!! param[in] tblIdxs         indices to access the table values (dependent variables)
+!! param[in] interpWghts     wheights to be multipy with 
+!! param[out] interpVals     the interpolated values.
 subroutine type_table_lookup_interpolate(table_lookup,tblIdxs,interpWghts,interpVals)
     ! This function uses the output from calcInterpolationWeights
     implicit none

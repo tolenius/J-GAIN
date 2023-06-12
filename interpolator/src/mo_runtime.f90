@@ -8,7 +8,8 @@ private
   end interface abort
 
 contains
- 
+!> @brief stop the application with message.
+!!
 subroutine abortImpl(msg)
 
 implicit none

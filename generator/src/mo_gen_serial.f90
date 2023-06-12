@@ -13,7 +13,7 @@ module mo_gen_serial
   
 contains
  
- 
+
 subroutine genLookupTableImp(gen_config_ranges,table)
 implicit none 
   ! Arguments 
@@ -24,7 +24,10 @@ implicit none
 
 end subroutine genLookupTableImp
 
-
+!> @brief calculates the lookup table values in serial mode
+!!
+!! @param[in]   gen_config_ranges   defines  the independent variables  sapace 
+!! @param[out]   table   the resulting table of values. here it is Nucleation Rate.
 subroutine genLookupTableFunc1(gen_config_ranges,table)
   use mo_utils, only: advanceLoopsBy,getNewUnit 
   use mo_debug 

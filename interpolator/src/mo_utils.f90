@@ -1,3 +1,4 @@
+
 module mo_utils
 implicit none 
 
@@ -5,7 +6,13 @@ implicit none
   public :: getNewUnit
 private 
 
-
+!> @brief Assuming an array A(d1,d2,...,dn) where d1,d2,...,dn are the dimentions. 
+!! Given indices I1,I2,...,In calling advanceLoopsBy with "by" equal k will result in  
+!! A(I1,I2,..,In+k). if In+k> dn it will set In to 1 and add (In+k-dn) to the preceeding dimension and so on.
+!!
+!! @param[in] loopsMax      conatains the dimensions (d1,d2,...,dn)  
+!! @param[in] by            the ampunt to shift
+!! @param[inout] loopVars   conatains the actual indices to be modified
   interface advanceLoopsBy
      module procedure advanceLoopsByOneImpl
      module procedure advanceLoopsByImpl

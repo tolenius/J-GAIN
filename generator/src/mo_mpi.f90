@@ -1,3 +1,5 @@
+!> @brief functions that implement MPI interfaces for different data types 
+!!
 module mo_mpi
   use mo_kind 
 implicit none 
