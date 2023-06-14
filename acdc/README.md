@@ -1,5 +1,7 @@
 # Molecular model set-up for generating tables from given input data
 
+The table generator applies automatic molecular cluster modeling, implemented through the cluster model ACDC, as the combination of cluster dynamics simulations and qusntum chmistry input is a standard approach for formation rate calculations. In general, the cluster thermodynamics input can be requested from quantum chemistry modelers or found in publications. Questions on the input files and formats can be addressed to the ACDC or J-GAIN contacts.
+
 ## Setting up the chemical system with molecular cluster thermodynamics data
 
 The input files for the molecular cluster set and thermodynamics include the following:
