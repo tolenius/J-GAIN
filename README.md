@@ -55,7 +55,7 @@ The current versions have been tested with gfortran of gcc (GCC) 6.4.0. and open
 If you use the codes provided in this repository in any study, please cite the following works:
 
 * This repository (https://github.com/tolenius/J-GAIN)
-* Yazgi, D., and Olenius, T.: J-GAIN v1.0: A flexible tool to incorporate aerosol formation rates obtained by molecular models into large-scale models, EGUsphere [preprint], https://doi.org/10.5194/egusphere-2022-1464 (2023)
+* Yazgi, D., and Olenius, T.: J-GAIN v1.1: a flexible tool to incorporate aerosol formation rates obtained by molecular models into large-scale models, *Geosci. Model Dev.* 16, 5237–5249 (2023), https://doi.org/10.5194/gmd-16-5237-2023
 
 ## License
 
