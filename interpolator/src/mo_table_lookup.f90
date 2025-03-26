@@ -374,7 +374,7 @@ subroutine load_from_bin_file(descriptor_file_path,table_bin_file_path,table_loo
    
    read(100,*)    !"Indep Vars Units"  
    do i=1,table_lookup%dimsCount
-      read(100,*)  table_lookup%units(i)
+      read(100,'(a)') table_lookup%units(i)
    enddo
    
    
@@ -417,7 +417,7 @@ subroutine load_from_bin_file(descriptor_file_path,table_bin_file_path,table_loo
    
    
    read(100,*) !'BIN FILE NAME'
-   read(100,*) bin_file_path_in_desc
+   read(100,'(a)') bin_file_path_in_desc
    
    if ( trim(bin_file_path_in_desc) /= trim(table_bin_file_path)) then   
       write(*,*) "bin file name mismatch. Please check ", trim(bin_file_path_in_desc) , "   ",trim(table_bin_file_path)

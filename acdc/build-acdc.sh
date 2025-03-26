@@ -273,12 +273,9 @@ FCFLAGS="-O0 -g -static -ffree-line-length-none -cpp -fcheck=bounds -finit-local
 F=solution_settings
 $FC $FCFLAGS -c $SRC_AD/solvers/$F.f90 -o $WORK_AD/$F.o  -I$INCLUDE_AD  -J$INCLUDE_AD  
 
-F=vode
+F=dvode
 $FC $FCFLAGS -c $SRC_AD/solvers/$F.f -o $WORK_AD/$F.o  -I$INCLUDE_AD  -J$INCLUDE_AD 
- 
-F=vodea
-$FC $FCFLAGS -c $SRC_AD/solvers/$F.f -o $WORK_AD/$F.o  -I$INCLUDE_AD  -J$INCLUDE_AD 
- 
+# Add -std=legacy to not print warnings
 	   
 	  
 #
@@ -324,7 +321,7 @@ $FC $FCFLAGS -c $SRC_AD/$F.f90 -o $WORK_AD/$F.o  -I$INCLUDE_AD  -J$INCLUDE_AD
 ar cr $LIB_AD/libacdc.a $WORK_AD/*.o 
 
 #
-F=run_acdc_J_example
-$FC $FCFLAGS   $SRC_AD/$F.f90 -o $BIN_AD/$F.exe -lacdc -I$INCLUDE_AD  -J$INCLUDE_AD  -L$LIB_AD
+#F=run_acdc_J_example
+#$FC $FCFLAGS   $SRC_AD/$F.f90 -o $BIN_AD/$F.exe -lacdc -I$INCLUDE_AD  -J$INCLUDE_AD  -L$LIB_AD
 	
 

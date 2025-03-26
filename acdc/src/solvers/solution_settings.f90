@@ -18,7 +18,7 @@ implicit none
 	real(kind(1.d0)), parameter :: negtol = -1.d-6		! (m^-3)
 	
 	! Criteria for monitoring the convergence to a steady state
-	real(kind(1.d0)), parameter :: sstol = 1.d-5		! maximum relative change in the concentrations
+	real(kind(1.d0)), parameter :: sstol = 1.d-3		! maximum relative change in the concentrations
 	real(kind(1.d0)), parameter :: sstimech = 6.d2		! minimum time interval for checking the changes (s)
 	real(kind(1.d0)), parameter :: sstimetot = 1.2d3	! minimum total simulation time required for a steady state (s)
 

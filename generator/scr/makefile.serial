@@ -86,5 +86,5 @@ mo_gen.o: mo_gen.f90
 clean:
 	-@cd $(OBJS_AD) ; rm -f *.o *.mod       2>/dev/null || true
 	-@cd $(WORKING_HOME) ; rm -f jgain_serial.exe2>/dev/null || true
-     $
+	 $
  
